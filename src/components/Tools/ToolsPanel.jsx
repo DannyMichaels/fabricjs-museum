@@ -8,6 +8,7 @@ import ShapesTools from './ShapesTools';
 import PatternsTools from './PatternsTools';
 import ArtStyleTools from './ArtStyleTools';
 import FiltersTools from './FiltersTools';
+import ColorPicker from './ColorPicker';
 import CanvasControls from '../Canvas/CanvasControls';
 
 const ToolsPanel = () => {
@@ -36,12 +37,18 @@ const ToolsPanel = () => {
           onClick={() => setActiveTab('filters')}>
           Filters
         </TabButton>
+        <TabButton
+          active={activeTab === 'colors'}
+          onClick={() => setActiveTab('colors')}>
+          Colors
+        </TabButton>
       </ToolTabs>
 
       {activeTab === 'shapes' && <ShapesTools />}
       {activeTab === 'patterns' && <PatternsTools />}
       {activeTab === 'artStyles' && <ArtStyleTools />}
       {activeTab === 'filters' && <FiltersTools />}
+      {activeTab === 'colors' && <ColorPicker />}
 
       <CanvasControls />
     </ToolbarContainer>

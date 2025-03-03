@@ -5,6 +5,7 @@ const useCanvasStore = create((set) => ({
   fabricCanvas: null,
   activeTab: 'shapes',
   selectedFilter: null,
+  currentColor: '#3f51b5', // Default color for new shapes
 
   // Actions
   setFabricCanvas: (canvas) => set({ fabricCanvas: canvas }),
@@ -12,6 +13,8 @@ const useCanvasStore = create((set) => ({
   setActiveTab: (tab) => set({ activeTab: tab }),
 
   setSelectedFilter: (filter) => set({ selectedFilter: filter }),
+
+  setCurrentColor: (color) => set({ currentColor: color }),
 
   applyFilter: (filterType) =>
     set((state) => {

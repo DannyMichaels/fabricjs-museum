@@ -8,15 +8,17 @@ import _ from 'lodash';
  * Add a shape to the canvas
  * @param {object} canvas - Fabric.js canvas instance
  * @param {string} shapeType - Type of shape to add
+ * @param {string} color - Color to apply to the shape (defaults to random if not provided)
  */
-export const addShape = (canvas, shapeType) => {
+export const addShape = (canvas, shapeType, color) => {
   let shape;
+  const fillColor = color || getRandomColor();
 
   switch (shapeType) {
     case 'circle':
       shape = new fabric.Circle({
         radius: 50,
-        fill: getRandomColor(),
+        fill: fillColor,
         left: 100,
         top: 100,
       });
@@ -25,7 +27,7 @@ export const addShape = (canvas, shapeType) => {
       shape = new fabric.Rect({
         width: 100,
         height: 80,
-        fill: getRandomColor(),
+        fill: fillColor,
         left: 100,
         top: 100,
       });
@@ -34,7 +36,7 @@ export const addShape = (canvas, shapeType) => {
       shape = new fabric.Triangle({
         width: 100,
         height: 100,
-        fill: getRandomColor(),
+        fill: fillColor,
         left: 100,
         top: 100,
       });
@@ -42,7 +44,7 @@ export const addShape = (canvas, shapeType) => {
     case 'polygon':
       const points = generatePolygonPoints(6, 50);
       shape = new fabric.Polygon(points, {
-        fill: getRandomColor(),
+        fill: fillColor,
         left: 100,
         top: 100,
       });
@@ -50,7 +52,7 @@ export const addShape = (canvas, shapeType) => {
     case 'star':
       const starPoints = generateStarPoints(5, 50, 25);
       shape = new fabric.Polygon(starPoints, {
-        fill: getRandomColor(),
+        fill: fillColor,
         left: 100,
         top: 100,
       });
@@ -69,23 +71,56 @@ export const addShape = (canvas, shapeType) => {
  * @param {string} shapeType - Type of shape to use in pattern
  * @param {number} rows - Number of rows
  * @param {number} cols - Number of columns
+ * @param {string} baseColor - Base color for the pattern (if provided, variations will be created)
  */
-export const createPatternWithShapes = (canvas, shapeType, rows, cols) => {
+export const createPatternWithShapes = (
+  canvas,
+  shapeType,
+  rows,
+  cols,
+  baseColor
+) => {
   const group = [];
   const shapeSize = 20;
   const spacing = 40;
+
+  // Function to create a slight variation of the base color if provided
+  const getPatternColor = () => {
+    if (baseColor) {
+      // Create slight variations of the base color
+      const rgb = hexToRgb(baseColor);
+      if (rgb) {
+        const variation = 30; // Max variation amount
+        const r = Math.max(
+          0,
+          Math.min(255, rgb.r + (Math.random() * variation * 2 - variation))
+        );
+        const g = Math.max(
+          0,
+          Math.min(255, rgb.g + (Math.random() * variation * 2 - variation))
+        );
+        const b = Math.max(
+          0,
+          Math.min(255, rgb.b + (Math.random() * variation * 2 - variation))
+        );
+        return `rgb(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)})`;
+      }
+    }
+    return getRandomColor();
+  };
 
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
       let shape;
       const x = j * spacing;
       const y = i * spacing;
+      const fillColor = getPatternColor();
 
       switch (shapeType) {
         case 'circle':
           shape = new fabric.Circle({
             radius: shapeSize / 2,
-            fill: getRandomColor(),
+            fill: fillColor,
             left: x,
             top: y,
           });
@@ -94,7 +129,7 @@ export const createPatternWithShapes = (canvas, shapeType, rows, cols) => {
           shape = new fabric.Rect({
             width: shapeSize,
             height: shapeSize,
-            fill: getRandomColor(),
+            fill: fillColor,
             left: x,
             top: y,
           });
@@ -103,7 +138,7 @@ export const createPatternWithShapes = (canvas, shapeType, rows, cols) => {
           shape = new fabric.Triangle({
             width: shapeSize,
             height: shapeSize,
-            fill: getRandomColor(),
+            fill: fillColor,
             left: x,
             top: y,
           });
@@ -115,7 +150,7 @@ export const createPatternWithShapes = (canvas, shapeType, rows, cols) => {
             shapeSize / 4
           );
           shape = new fabric.Polygon(starPoints, {
-            fill: getRandomColor(),
+            fill: fillColor,
             left: x,
             top: y,
           });
