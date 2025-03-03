@@ -78,8 +78,23 @@ const useCanvasStore = create((set) => ({
       if (state.fabricCanvas) {
         const activeObject = state.fabricCanvas.getActiveObject();
         if (activeObject) {
-          state.fabricCanvas.remove(activeObject);
+          // Handle both individual objects and multiple selections
+          if (activeObject.type === 'activeSelection') {
+            // Get all selected objects before removing them
+            const selectedObjects = activeObject.getObjects();
+            // Remove the active selection first to avoid fabric.js issues
+            state.fabricCanvas.discardActiveObject();
+            // Now remove each object that was in the selection
+            selectedObjects.forEach((obj) => {
+              state.fabricCanvas.remove(obj);
+            });
+          } else {
+            // Single object deletion
+            state.fabricCanvas.remove(activeObject);
+          }
           state.fabricCanvas.renderAll();
+          // Trigger history update
+          state.fabricCanvas.fire('object:modified');
         }
       }
       return {};
