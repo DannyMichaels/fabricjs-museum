@@ -25,6 +25,13 @@ function App() {
           Welcome to the Virtual Museum Art Creator! Create your own
           museum-worthy digital art using shapes, patterns, and apply different
           art styles.
+          <br />
+          Made by&nbsp;
+          <a
+            target="_blank"
+            href="https://www.upwork.com/freelancers/~019a9afd0f1e94fc80">
+            &copy;&nbsp;Daniel Michael
+          </a>
         </p>
       </AppInfo>
     </AppContainer>
