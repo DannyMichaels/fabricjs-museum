@@ -6,7 +6,7 @@ to run:
 - CD into the folder
 - run: `npm install`
 - make sure u have at least node 18
-- run `npm dev`
+- run `npm run dev`
 
 or visit:
 https://fabricjs-museum.netlify.app/
